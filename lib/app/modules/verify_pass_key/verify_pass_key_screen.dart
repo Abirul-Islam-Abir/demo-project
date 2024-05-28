@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../api_services/api_services.dart';
@@ -11,15 +10,15 @@ class VerifyPassKeyScreen extends StatefulWidget {
   final String passKeyChallenge;
   final String mail;
 
-  VerifyPassKeyScreen({required this.passKeyChallenge, required this.mail});
+  const VerifyPassKeyScreen({super.key, required this.passKeyChallenge, required this.mail});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerifyPassKeyScreenState createState() => _VerifyPassKeyScreenState();
 }
 
 class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
   final TextEditingController _passKeyController = TextEditingController();
-  final TextEditingController _mailController = TextEditingController();
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -55,8 +54,9 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
       if (response.statusCode == 200) {
         _isLoading = false;
         setState(() {});
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => UserDataScreen(),), (
+            MaterialPageRoute(builder: (context) => const UserDataScreen(),), (
             route) => false);
       } else {
         _isLoading = false;
@@ -82,7 +82,7 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Pass Key Challenge'),
+        title: const Text('Verify Pass Key Challenge'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,7 +91,7 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'Enter pass key to verify:',
                   style: TextStyle(
                     fontSize: 18,
@@ -100,27 +100,27 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
                 ), Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '${widget.passKeyChallenge}',
-                    style: TextStyle(
+                    widget.passKeyChallenge,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,color: Colors.grey
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _passKeyController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Pass Key',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
-            isLoading?Center(child: CircularProgressIndicator(),):   ElevatedButton(
+            const SizedBox(height: 16),
+            isLoading?const Center(child: CircularProgressIndicator(),):   ElevatedButton(
               onPressed: verifyPassKey,
-              child: Text('Verify'),
+              child: const Text('Verify'),
             ),
           ],
         ),

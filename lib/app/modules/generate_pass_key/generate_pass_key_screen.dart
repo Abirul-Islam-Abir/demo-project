@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:demo/app/modules/verify_pass_key/verify_pass_key_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:demo/app/api_services/api_services.dart';
-import 'package:demo/app/modules/login_screen/login_screen.dart';
-import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
+// ignore: must_be_immutable
 class PassKeyScreen extends StatefulWidget {
   late    String mail;
 
@@ -42,6 +39,7 @@ class _PassKeyScreenState extends State<PassKeyScreen> {
     if (response.statusCode == 200) {
       _isLoading = false;
       setState(() {});
+      // ignore: use_build_context_synchronously
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => VerifyPassKeyScreen(mail:_emailController.text ,
             passKeyChallenge: responseData['data']['passkey_challenge']),
@@ -69,33 +67,33 @@ _emailController.text   = widget.mail ;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generate Pass Key Challenge'),
+        title: const Text('Generate Pass Key Challenge'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Enter your email to generate pass key challenge:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
-            isLoading?Center(child: CircularProgressIndicator(),):  ElevatedButton(
+            const SizedBox(height: 16),
+            isLoading?const Center(child: CircularProgressIndicator(),):  ElevatedButton(
               onPressed: generatePassKey,
-              child: Text('Generate Challenge'),
+              child: const Text('Generate Challenge'),
             ),
           ],
         ),

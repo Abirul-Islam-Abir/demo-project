@@ -1,13 +1,11 @@
-import 'package:demo/app/modules/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/modules/sign_up_screen/signUp_screen.dart';
-import 'app/modules/user_data_screen/user_data_screen.dart';
+import 'app/modules/splash_screen/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -38,46 +36,7 @@ class MyApp extends StatelessWidget {
           color: Colors.blue,
         ),
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({
-    super.key,
-  });
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  Future checkLogin() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    if (token != null && token.isNotEmpty) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => UserDataScreen()),
-          (route) => false);
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => SignUpScreen()),
-          (route) => false);
-    }
-  }
-
-  @override
-  void initState() {
-    checkLogin();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return   LoginScreen();
-  }
-}
-
-
-

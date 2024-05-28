@@ -4,7 +4,6 @@ import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/data.dart';
 import 'package:demo/app/modules/generate_pass_key/generate_pass_key_screen.dart';
 import 'package:demo/app/modules/sign_up_screen/signUp_screen.dart';
-import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +11,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -52,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
        await SharedPref.storeToken(responseData['data']['response']['token']);
         _showSnackBar('${responseData['message']}');
+        // ignore: use_build_context_synchronously
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => PassKeyScreen(mail: _emailController.text,)));
         _isLoading = false;
         setState(() {});
@@ -128,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => SignUpScreen(),), (
+                      MaterialPageRoute(builder: (context) => const SignUpScreen(),), (
                       route) => false);
                 },
                 child: const Text("Don't have an account? Sign up"),
