@@ -2,7 +2,7 @@ import 'package:demo/app/modules/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/modules/sign_up_screen/signUp_screen.dart';
+import 'app/modules/sign_up_screen/signup_screen.dart';
 import 'app/modules/user_data_screen/user_data_screen.dart';
 
 void main() {
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           color: Colors.blue,
         ),
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -57,13 +57,17 @@ class _SplashScreenState extends State<SplashScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     if (token != null && token.isNotEmpty) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => UserDataScreen()),
-          (route) => false);
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const UserDataScreen()),
+            (route) => false);
+      }
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => SignUpScreen()),
-          (route) => false);
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            (route) => false);
+      }
     }
   }
 
@@ -75,9 +79,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return   LoginScreen();
+    return const LoginScreen();
   }
 }
-
-
-

@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/data.dart';
 import 'package:demo/app/modules/generate_pass_key/generate_pass_key_screen.dart';
-import 'package:demo/app/modules/sign_up_screen/signUp_screen.dart';
-import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
+import 'package:demo/app/modules/sign_up_screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,10 +11,10 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -24,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool get isLoading => _isLoading;
 
   void _login(BuildContext context) async {
-
     if (_formKey.currentState!.validate()) {
       _isLoading = true;
       setState(() {});
@@ -50,9 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       final responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
-       await SharedPref.storeToken(responseData['data']['response']['token']);
+        await SharedPref.storeToken(responseData['data']['response']['token']);
         _showSnackBar('${responseData['message']}');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => PassKeyScreen(mail: _emailController.text,)));
+        if (mounted) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PassKeyScreen(
+                    mail: _emailController.text,
+                  )));
+        }
         _isLoading = false;
         setState(() {});
       } else {
@@ -128,8 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => SignUpScreen(),), (
-                      route) => false);
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                      (route) => false);
                 },
                 child: const Text("Don't have an account? Sign up"),
               ),

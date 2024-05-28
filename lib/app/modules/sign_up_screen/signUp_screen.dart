@@ -1,22 +1,18 @@
-import 'package:demo/app/api_services/api_services.dart';
-import 'package:demo/app/modules/login_screen/login_screen.dart';
-import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../generate_pass_key/generate_pass_key_screen.dart';
+import 'package:demo/app/api_services/api_services.dart';
+import 'package:demo/app/modules/login_screen/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _fullNameController = TextEditingController();
@@ -84,7 +80,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _isLoading = false;
         setState(() {});
         _showSnackBar(responseData['message']);
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen(),));
+        if (mounted) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ));
+        }
         _showSnackBar('Please Login again');
       } else {
         _isLoading = false;
@@ -226,7 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // Navigate to the sign-up screen
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       ),
                       (route) => false);
                 },

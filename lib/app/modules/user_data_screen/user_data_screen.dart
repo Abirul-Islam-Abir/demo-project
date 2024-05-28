@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
+
 import 'package:demo/app/modules/login_screen/login_screen.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api_services/api_services.dart';
-import '../sign_up_screen/signUp_screen.dart';
 
 class UserDataScreen extends StatefulWidget {
   const UserDataScreen({super.key});
@@ -37,17 +38,17 @@ class _UserDataScreenState extends State<UserDataScreen> {
         body: body,
       );
       var responseData = json.decode(response.body);
-      print(responseData);
+      log(responseData);
       if (response.statusCode == 200) {
         userData = responseData['data']['user'];
-        print(responseData['data']['user']);
-        print(userData);
+        log(responseData['data']['user']);
+        log(userData.toString());
         _isLoading = false;
         setState(() {});
       } else {
         _isLoading = false;
         setState(() {});
-        print('Failed to sign up. Status code: ${response.statusCode}');
+        log('Failed to sign up. Status code: ${response.statusCode}');
         // Handle error
       }
     }
@@ -70,11 +71,14 @@ class _UserDataScreenState extends State<UserDataScreen> {
                 final SharedPreferences prefs =
                     await SharedPreferences.getInstance();
                 await prefs.remove('token');
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                    (route) => false);
+                if (mounted) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                      (route) => false);
+                }
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
       ),
       body: Padding(

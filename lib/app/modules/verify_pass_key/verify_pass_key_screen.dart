@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:demo/app/modules/user_data_screen/user_data_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../api_services/api_services.dart';
@@ -11,13 +10,14 @@ class VerifyPassKeyScreen extends StatefulWidget {
   final String passKeyChallenge;
   final String mail;
 
-  VerifyPassKeyScreen({required this.passKeyChallenge, required this.mail});
+  const VerifyPassKeyScreen(
+      {super.key, required this.passKeyChallenge, required this.mail});
 
   @override
-  _VerifyPassKeyScreenState createState() => _VerifyPassKeyScreenState();
+  VerifyPassKeyScreenState createState() => VerifyPassKeyScreenState();
 }
 
-class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
+class VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
   final TextEditingController _passKeyController = TextEditingController();
   final TextEditingController _mailController = TextEditingController();
   bool _isLoading = false;
@@ -25,14 +25,15 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
   bool get isLoading => _isLoading;
 
   Future<void> verifyPassKey() async {
-    if(widget.passKeyChallenge==_passKeyController.text){
+    if (widget.passKeyChallenge == _passKeyController.text) {
       _isLoading = true;
       setState(() {});
       // Define the endpoint URL
       var url = Uri.parse(ApiServices.generatePassKeyUrl);
       // Define the data to be sent in the body of the request
       var data = {
-        "attestationData": "I2NzRiMmEzYS1mMzgzLTRiNDYtYmMzMi0yODYxMjk5MzE1MjUiLCJpYXQiOjE3MTYy",
+        "attestationData":
+            "I2NzRiMmEzYS1mMzgzLTRiNDYtYmMzMi0yODYxMjk5MzE1MjUiLCJpYXQiOjE3MTYy",
         "authentication": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOi",
         "clientData": "RzdLKcV94edLdBN5t1w1_f67PKKPrUUEM-iTiFfQ",
         "credentials": {
@@ -55,16 +56,20 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
       if (response.statusCode == 200) {
         _isLoading = false;
         setState(() {});
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => UserDataScreen(),), (
-            route) => false);
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const UserDataScreen(),
+              ),
+              (route) => false);
+        }
       } else {
         _isLoading = false;
         setState(() {});
         // Request failed with an error status code, handle the error
         _showSnackBar('Request failed');
       }
-    }else{
+    } else {
       _showSnackBar('Pass key not same');
     }
   }
@@ -77,12 +82,11 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Pass Key Challenge'),
+        title: const Text('Verify Pass Key Challenge'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,37 +95,41 @@ class _VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'Enter pass key to verify:',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ), Padding(
+                ),
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '${widget.passKeyChallenge}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,color: Colors.grey
-                    ),
+                    widget.passKeyChallenge,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.grey),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _passKeyController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Pass Key',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
-            isLoading?Center(child: CircularProgressIndicator(),):   ElevatedButton(
-              onPressed: verifyPassKey,
-              child: Text('Verify'),
-            ),
+            const SizedBox(height: 16),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ElevatedButton(
+                    onPressed: verifyPassKey,
+                    child: const Text('Verify'),
+                  ),
           ],
         ),
       ),
