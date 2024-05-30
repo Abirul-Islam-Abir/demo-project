@@ -11,7 +11,7 @@ class AuthView extends GetView<AuthController> {
   const AuthView({super.key});
   @override
   Widget build(BuildContext context) {
-    controller.emailController.text = 'muj.i@icloud.com';
+    // controller.emailController.text = 'muj.i@icloud.com';
     final LocalAuthentication auth = LocalAuthentication();
 
     return Scaffold(
@@ -36,7 +36,7 @@ class AuthView extends GetView<AuthController> {
               ),
               const SizedBox(height: 20),
               Obx(
-                () => controller.isLoading.value || controller.isLoading2.value
+                () => controller.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )

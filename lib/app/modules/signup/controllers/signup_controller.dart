@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:demo/app/modules/auth/controllers/auth_controller.dart';
-import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -50,23 +49,14 @@ class SignupController extends GetxController {
     );
     var responseData = jsonDecode(response.body);
     log(responseData.toString());
-    if (response.statusCode == 201) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
       isLoading.value = false;
       update();
       Get.showSnackbar(GetSnackBar(
         message: responseData['message'],
         duration: const Duration(seconds: 2),
       ));
-      final isGotToken = await AuthController.to.verifyPassKey(email);
-      if (isGotToken) {
-        Get.offAllNamed(Routes.HOME);
-      } else {
-        Get.showSnackbar(const GetSnackBar(
-          message: 'Please verify your email',
-          duration: Duration(seconds: 2),
-        ));
-        Get.offAllNamed(Routes.AUTH);
-      }
+      await AuthController.to.verifyPassKey(email);
     } else {
       isLoading.value = false;
       update();

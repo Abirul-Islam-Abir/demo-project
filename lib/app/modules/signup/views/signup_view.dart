@@ -56,8 +56,7 @@ class SignupView extends GetView<SignupController> {
               const SizedBox(height: 20),
               Obx(() {
                 return controller.isLoading.value ||
-                        AuthController.to.isLoading.value ||
-                        AuthController.to.isLoading2.value
+                        AuthController.to.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
