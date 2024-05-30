@@ -4,7 +4,7 @@ import 'package:demo/app/common/token_keeper.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../api_services/api_services.dart';
+import '../../../../data/urls/urls.dart';
 
 class UserDataScreen extends StatefulWidget {
   const UserDataScreen({super.key});
@@ -27,7 +27,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
       setState(() {});
       String body = json.encode({"token": token});
       var response = await http.post(
-        Uri.parse(ApiServices.getUserDataUrl),
+        Uri.parse(Urls.getUserDataUrl),
         headers: {
           'Content-Type': 'application/json',
         },

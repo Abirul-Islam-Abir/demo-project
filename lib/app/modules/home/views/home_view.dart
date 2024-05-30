@@ -1,5 +1,6 @@
 import 'package:demo/app/common/token_keeper.dart';
 import 'package:demo/app/modules/all_blogs_screen/all_blogs_screen.dart';
+import 'package:demo/app/modules/event_category/all_events_category.dart';
 import 'package:demo/app/modules/get_all_events/get_all_events_screen.dart';
 import 'package:demo/app/modules/home/views/widgets/user_data_screen.dart';
 import 'package:demo/app/routes/app_pages.dart';
@@ -38,16 +39,18 @@ class HomeView extends GetView<HomeController> {
             children: [
               TextButton(
                   onPressed: () {
-                    Get.to(const GetAllBlogsScreen());
+                    Get.to(() => const GetAllBlogsScreen());
                   },
                   child: const Text('Get All Blogs')),
               TextButton(
                   onPressed: () {
-                    Get.to(const GetAllEventsScreen());
+                    Get.to(() => const GetAllEventsScreen());
                   },
                   child: const Text('Get all events')),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => const AllEventsCategory());
+                  },
                   child: const Text('Get all event category')),
               TextButton(onPressed: () {}, child: const Text('Get all chats')),
             ],

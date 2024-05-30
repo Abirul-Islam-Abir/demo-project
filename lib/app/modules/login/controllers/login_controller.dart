@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/common/token_keeper.dart';
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   Future<bool> signIn() async {
     isLoading.value = true;
     update();
-    final url = Uri.parse(ApiServices.signInUrl);
+    final url = Uri.parse(Urls.signInUrl);
     final data = {
       "email": emailController.text,
       "password": passwordController.text

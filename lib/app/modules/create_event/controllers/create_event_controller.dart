@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/common/token_keeper.dart';
 import 'package:demo/app/common/widgets/multiple_image_select/multiple_image_select_controller.dart';
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:demo/app/modules/get_all_events/get_all_events_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +19,7 @@ class CreateEventController extends GetxController {
   Future<bool> createEvent() async {
     isLoading.value = true;
     update();
-    final url = Uri.parse(ApiServices.eventCreateUrl);
+    final url = Uri.parse(Urls.eventCreateUrl);
     final data = {
       "title": titleController.text.toString(),
       "description": descriptionController.text.toString(),

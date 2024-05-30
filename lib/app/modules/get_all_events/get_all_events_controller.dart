@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/common/token_keeper.dart';
-import 'package:demo/app/model/all_events_model.dart';
+import 'package:demo/app/data/model/all_events_model.dart';
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +17,7 @@ class GetAllEventController extends GetxController {
       isLoading.value = true;
       update();
       var response = await http.get(
-        Uri.parse(ApiServices.getAllEventsUrl),
+        Uri.parse(Urls.getAllEventsUrl),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

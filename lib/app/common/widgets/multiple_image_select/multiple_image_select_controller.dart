@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:demo/app/api_services/api_services.dart';
-import 'package:demo/app/common/widgets/multiple_image_select/multipart_upload_model.dart';
+import 'package:demo/app/data/model/multipart_upload_model.dart';
 import 'package:demo/app/data/services/network_caller/network_response.dart';
 import 'package:demo/app/data/services/network_caller/request_methods/post_request.dart';
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -48,7 +48,7 @@ class MultipleImageSelectController extends GetxController {
     _imageUploadInProgress.value = true;
     update();
     final NetworkResponse response = await PostRequest.execute(
-        ApiServices.eventUploadImageUrl, {},
+        Urls.eventUploadImageUrl, {},
         images: [File(image!.path)], isImage: true);
     _imageUploadInProgress.value = false;
     update();

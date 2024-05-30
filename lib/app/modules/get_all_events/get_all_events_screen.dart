@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../api_services/api_services.dart';
+import '../../data/urls/urls.dart';
 
 class GetAllEventsScreen extends StatefulWidget {
   const GetAllEventsScreen({super.key});
@@ -87,7 +87,7 @@ class _EventByIdState extends State<EventById> {
       _isLoading = true;
       setState(() {});
       var response = await http.get(
-        Uri.parse(ApiServices.eventByIdUrl + widget.id),
+        Uri.parse(Urls.eventByIdUrl + widget.id),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -126,13 +126,12 @@ class _EventByIdState extends State<EventById> {
         "start_time": "2024-01-14T23:59:59Z",
         "end_time": "2024-01-15T00:00:00Z"
       };
-      var response =
-          await http.put(Uri.parse(ApiServices.eventUpdateUrl + widget.id),
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer $token',
-              },
-              body: jsonEncode(body));
+      var response = await http.put(Uri.parse(Urls.eventUpdateUrl + widget.id),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode(body));
       var responseData = json.decode(response.body);
       if (response.statusCode == 200) {
         eventByIdData = responseData['data']['updatedEvent'];
@@ -148,7 +147,7 @@ class _EventByIdState extends State<EventById> {
       _isLoading = true;
       setState(() {});
       var response = await http.delete(
-        Uri.parse(ApiServices.eventDeleteUrl + widget.id),
+        Uri.parse(Urls.eventDeleteUrl + widget.id),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
