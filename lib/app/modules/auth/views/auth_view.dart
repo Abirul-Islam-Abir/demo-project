@@ -1,3 +1,4 @@
+import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,9 +8,10 @@ class AuthView extends GetView<AuthController> {
   const AuthView({super.key});
   @override
   Widget build(BuildContext context) {
+    controller.emailController.text = 'muj.i@icloud.com';
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AuthView'),
+        title: const Text('Auth View'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -34,11 +36,29 @@ class AuthView extends GetView<AuthController> {
                       )
                     : ElevatedButton(
                         onPressed: () async {
-                          controller.verifyPassKey();
+                          final isGotToken = await AuthController.to
+                              .verifyPassKey(
+                                  controller.emailController.text.trim());
+                          if (isGotToken) {
+                            Get.offAllNamed(Routes.HOME);
+                          } else {
+                            Get.showSnackbar(const GetSnackBar(
+                              message: 'Please verify your email',
+                              duration: Duration(seconds: 2),
+                            ));
+                            Get.offAllNamed(Routes.AUTH);
+                          }
                         },
-                        child: const Text('Register'),
+                        child: const Text('Sign In'),
                       ),
               ),
+              const SizedBox(height: 10),
+              const Text('Don\'t have an account?'),
+              TextButton(
+                  onPressed: () {
+                    Get.offAllNamed(Routes.SIGNUP);
+                  },
+                  child: const Text('Sign Up')),
             ],
           ),
         ),
