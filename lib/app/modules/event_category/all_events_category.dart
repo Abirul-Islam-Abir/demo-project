@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:demo/app/common/token_keeper.dart';
 import 'package:demo/app/data/model/all_events_category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/urls/urls.dart';
 
@@ -22,8 +22,7 @@ class _AllEventsCategoryState extends State<AllEventsCategory> {
   bool get isLoading => _isLoading;
 
   Future<void> eventCategory() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    final String? token = TokenKeeper.accessToken;
     if (token != null && token.isNotEmpty) {
       print(token);
       _isLoading = true;
@@ -103,8 +102,7 @@ class _EventsCategoryByIdState extends State<EventsCategoryById> {
   TextEditingController title = TextEditingController();
 
   Future<void> eventById() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    final String? token = TokenKeeper.accessToken;
     if (token != null && token.isNotEmpty) {
       _isLoading = true;
       setState(() {});
@@ -129,8 +127,7 @@ class _EventsCategoryByIdState extends State<EventsCategoryById> {
   }
 
   Future<void> update() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
+    final String? token = TokenKeeper.accessToken;
     if (token != null && token.isNotEmpty) {
       _isLoading = true;
       setState(() {});
