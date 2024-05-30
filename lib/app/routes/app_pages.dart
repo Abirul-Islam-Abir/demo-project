@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/create_event/bindings/create_event_binding.dart';
+import '../modules/create_event/views/create_event_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -51,6 +53,11 @@ class AppPages {
       name: _Paths.LOGIN_SELECT,
       page: () => const LoginSelectView(),
       binding: LoginSelectBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATE_EVENT,
+      page: () => const CreateEventView(),
+      binding: CreateEventBinding(),
     ),
   ];
 }

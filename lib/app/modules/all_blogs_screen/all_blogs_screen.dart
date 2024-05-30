@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:demo/app/data/token_keeper.dart';
-import 'package:demo/app/model/get_all_blogs_model.dart';
+import 'package:demo/app/common/token_keeper.dart';
+import 'package:demo/app/data/model/get_all_blogs_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../../api_services/api_services.dart';
-import '../../model/get_blogs_by_id_model.dart';
+import '../../data/model/get_blogs_by_id_model.dart';
+import '../../data/urls/urls.dart';
 
 class GetAllBlogsScreen extends StatefulWidget {
   const GetAllBlogsScreen({super.key});
@@ -29,7 +29,7 @@ class _GetAllBlogsScreenState extends State<GetAllBlogsScreen> {
       _isLoading = true;
       setState(() {});
       var response = await http.get(
-        Uri.parse(ApiServices.getAllBlogsUrl),
+        Uri.parse(Urls.getAllBlogsUrl),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -107,7 +107,7 @@ class _BlogsByIdScreenState extends State<BlogsByIdScreen> {
       _isLoading = true;
       setState(() {});
       var response = await http.get(
-        Uri.parse(ApiServices.blogByIdUrl + widget.id),
+        Uri.parse(Urls.blogByIdUrl + widget.id),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

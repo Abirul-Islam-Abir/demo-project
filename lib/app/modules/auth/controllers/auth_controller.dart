@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:demo/app/data/token_keeper.dart';
+import 'package:demo/app/common/token_keeper.dart';
 import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,10 +20,8 @@ class AuthController extends GetxController {
     isLoading.value = true;
     update();
     String pass = '';
-    final url1 = Uri.parse(
-        'https://kumele-backend.vercel.app/api/auth/passkey/generate/challenge');
-    final url2 = Uri.parse(
-        'https://kumele-backend.vercel.app/api/auth/passkey/verify/challenge');
+    final url1 = Uri.parse(ApiServices.generatePassKeyUrl);
+    final url2 = Uri.parse(ApiServices.verifyPassKeyUrl);
 
     http.post(url1, body: {"email": email}).then((response) {
       log(response.body);
@@ -39,8 +37,6 @@ class AuthController extends GetxController {
           log('saving token');
           TokenKeeper.setTokens(
             responseData['data']['token'],
-            responseData['data']['user']['full_name'],
-            responseData['data']['user']['email'],
           ).then((value) {
             isVerified.value = true;
             if (isVerified.value) {
