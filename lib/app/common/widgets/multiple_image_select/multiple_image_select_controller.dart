@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:demo/app/api_services/api_services.dart';
+import 'package:demo/app/common/widgets/multiple_image_select/multipart_upload_model.dart';
 import 'package:demo/app/data/services/network_caller/network_response.dart';
 import 'package:demo/app/data/services/network_caller/request_methods/post_request.dart';
 import 'package:get/get.dart';
@@ -44,7 +46,7 @@ class MultipleImageSelectController extends GetxController {
     _imageUploadInProgress.value = true;
     update();
     final NetworkResponse response = await PostRequest.execute(
-        Urls.multipartUpload, {},
+        ApiServices.eventUpdateUrl, {},
         images: [File(image!.path)], isImage: true);
     _imageUploadInProgress.value = false;
     update();
@@ -52,9 +54,9 @@ class MultipleImageSelectController extends GetxController {
     if (response.isSuccess) {
       final multipartUploadModel =
           multipartUploadModelFromJson(jsonEncode(response.responseData));
-      imageUrl = multipartUploadModel.location.toString();
+      imageUrl = multipartUploadModel.data!.imageUrl.toString();
       log(response.responseData);
-      log(multipartUploadModel.location.toString());
+      log(multipartUploadModel.data!.imageUrl.toString());
       log('Status from multiple imae controller: ${response.statusCode}');
       return true;
     } else {
