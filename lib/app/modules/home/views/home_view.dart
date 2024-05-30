@@ -1,7 +1,9 @@
 import 'package:demo/app/data/token_keeper.dart';
+import 'package:demo/app/modules/all_blogs_screen/all_blogs_screen.dart';
+import 'package:demo/app/modules/get_all_events/get_all_events_screen.dart';
+import 'package:demo/app/modules/home/views/widgets/user_data_screen.dart';
 import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
 
@@ -16,35 +18,43 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         title: const Text('Home View'),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                TokenKeeper.clear();
+                Get.offAllNamed(Routes.AUTH);
+              },
+              icon: const Icon(Icons.logout_sharp))
+        ],
       ),
-      body: Obx(() {
-        return controller.isLoading.value
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(TokenKeeper.name ?? 'No name',
-                        style: const TextStyle(fontSize: 20)),
-                    const SizedBox(height: 10),
-                    Text(TokenKeeper.email ?? 'No email',
-                        style: const TextStyle(fontSize: 20)),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                        onPressed: () {
-                          TokenKeeper.clear();
-                          Get.offAllNamed(Routes.AUTH);
-                        },
-                        child: const Text('Logout',
-                            style: TextStyle(fontSize: 20))),
-                  ],
-                ),
-              );
-      }),
+      drawer: const Drawer(
+        child: UserDataScreen(),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Get.to(const GetAllBlogsScreen());
+                  },
+                  child: const Text('Get All Blogs')),
+              TextButton(
+                  onPressed: () {
+                    Get.to(const GetAllEventsScreen());
+                  },
+                  child: const Text('Get all events')),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text('Get all event category')),
+              TextButton(onPressed: () {}, child: const Text('Get all chats')),
+            ],
+          ),
+        ),
+      ),
       // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   Get.to(const TestView());
+      //   Get.to(const HomeScreen());
       // }),
     );
   }
