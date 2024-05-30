@@ -27,6 +27,9 @@ class MultipleImageSelectController extends GetxController {
             imageUrls.add(imageUrl);
           }
         }
+      } else {
+        Get.snackbar('Image Limit Reached',
+            'You can only select $maxLimit images at a time');
       }
     } catch (e) {
       log(e.toString());
