@@ -1,8 +1,9 @@
 import 'package:demo/app/modules/login_screen/login_screen.dart';
+import 'package:demo/app/modules/new_sign_up/new_sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/modules/sign_up_screen/signup_screen.dart';
 import 'app/modules/user_data_screen/user_data_screen.dart';
 
 void main() {
@@ -14,31 +15,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        primaryColor: Colors.blue,
-        inputDecorationTheme: const InputDecorationTheme(
-            enabledBorder: OutlineInputBorder(), border: OutlineInputBorder()),
-        textTheme: const TextTheme(
-          displayLarge: TextStyle(
-              fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.black),
-          bodyLarge: TextStyle(fontSize: 16.0, color: Colors.black),
-        ),
-        buttonTheme: const ButtonThemeData(
-          buttonColor: Colors.blue,
-          textTheme: ButtonTextTheme.primary,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow)),
-        appBarTheme: const AppBarTheme(
-          color: Colors.blue,
-        ),
-      ),
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }
@@ -65,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            MaterialPageRoute(builder: (context) => const NewSignUpView()),
             (route) => false);
       }
     }

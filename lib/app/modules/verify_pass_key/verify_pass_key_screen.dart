@@ -19,7 +19,6 @@ class VerifyPassKeyScreen extends StatefulWidget {
 
 class VerifyPassKeyScreenState extends State<VerifyPassKeyScreen> {
   final TextEditingController _passKeyController = TextEditingController();
-  final TextEditingController _mailController = TextEditingController();
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;

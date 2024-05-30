@@ -16,7 +16,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.2.1
   shared_preferences: ^2.2.3
-
+  get: ^4.6.6
+  flutter_passkey: ^1.0.4
+  local_auth: ^2.2.0
 
 
 dev_dependencies:
