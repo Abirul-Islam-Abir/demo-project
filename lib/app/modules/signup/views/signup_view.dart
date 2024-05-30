@@ -70,7 +70,7 @@ class SignupView extends GetView<SignupController> {
                           const Text('Already have an account?'),
                           TextButton(
                               onPressed: () {
-                                Get.offAllNamed(Routes.AUTH);
+                                Get.offAllNamed(Routes.LOGIN_SELECT);
                               },
                               child: const Text('Sign In')),
                         ],

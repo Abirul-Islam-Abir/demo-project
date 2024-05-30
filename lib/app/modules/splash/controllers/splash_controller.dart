@@ -6,7 +6,7 @@ class SplashController extends GetxController {
   navigateByState() {
     Future.delayed(const Duration(seconds: 1), () {
       if (TokenKeeper.accessToken == null) {
-        Get.offAllNamed(Routes.AUTH);
+        Get.offAllNamed(Routes.LOGIN_SELECT);
       } else {
         Get.offAllNamed(Routes.HOME);
       }

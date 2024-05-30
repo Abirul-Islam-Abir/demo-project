@@ -22,7 +22,7 @@ class HomeView extends GetView<HomeController> {
           IconButton(
               onPressed: () {
                 TokenKeeper.clear();
-                Get.offAllNamed(Routes.AUTH);
+                Get.offAllNamed(Routes.LOGIN_SELECT);
               },
               icon: const Icon(Icons.logout_sharp))
         ],

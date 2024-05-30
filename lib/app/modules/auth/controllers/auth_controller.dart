@@ -50,7 +50,7 @@ class AuthController extends GetxController {
                 message: 'Please verify your email',
                 duration: Duration(seconds: 2),
               ));
-              Get.offAllNamed(Routes.AUTH);
+              Get.offAllNamed(Routes.LOGIN_SELECT);
             }
           });
           isLoading.value = false;
