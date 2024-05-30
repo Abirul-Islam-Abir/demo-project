@@ -11,13 +11,11 @@ class MultipleImageSelectWidget extends StatelessWidget {
     super.key,
     required this.maxLimit,
     this.containerHeight,
-    this.isFromBlogAndRecipe = false,
     this.upLoadTypeName,
   });
 
   final double? containerHeight;
   final int maxLimit;
-  final bool isFromBlogAndRecipe;
   final String? upLoadTypeName;
 
   @override
@@ -29,8 +27,11 @@ class MultipleImageSelectWidget extends StatelessWidget {
       children: [
         Center(
           child: InkWell(onTap: () {
-            imagePickerBottomSheet(context, controller, maxLimit,
-                isFromBlogAndRecipe: isFromBlogAndRecipe);
+            imagePickerBottomSheet(
+              context,
+              controller,
+              maxLimit,
+            );
           }, child: Obx(() {
             return Container(
                 width: Get.width,
@@ -56,45 +57,44 @@ class MultipleImageSelectWidget extends StatelessWidget {
           })),
         ),
         const SizedBox(height: 10),
-        if (!isFromBlogAndRecipe)
-          Obx(
-            () => Wrap(
-              children: List.generate(
-                controller.images.length,
-                (index) => Stack(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 4),
-                      height: 58,
-                      width: 78,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        image: DecorationImage(
-                          image: FileImage(File(controller.images[index].path)),
-                          fit: BoxFit.cover,
-                        ),
+        Obx(
+          () => Wrap(
+            children: List.generate(
+              controller.images.length,
+              (index) => Stack(
+                children: [
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                    height: 58,
+                    width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      image: DecorationImage(
+                        image: FileImage(File(controller.images[index].path)),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
-                      bottom: 27,
-                      left: 50,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          size: 16,
-                          color: Colors.blue,
-                        ),
-                        onPressed: () {
-                          controller.removeImage(index);
-                        },
+                  ),
+                  Positioned(
+                    bottom: 27,
+                    left: 50,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.blue,
                       ),
+                      onPressed: () {
+                        controller.removeImage(index);
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
+        ),
         Obx(
           () => controller.isValid.value
               ? const SizedBox()
@@ -105,28 +105,28 @@ class MultipleImageSelectWidget extends StatelessWidget {
     );
   }
 
-  Future<dynamic> imagePickerBottomSheet(BuildContext context,
-      MultipleImageSelectController controller, int maxLimit,
-      {bool? isFromBlogAndRecipe}) {
+  Future<dynamic> imagePickerBottomSheet(
+    BuildContext context,
+    MultipleImageSelectController controller,
+    int maxLimit,
+  ) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
         return ImagePickerBottomSheet(
           onTapForPhotoLibrary: () {
-            if (isFromBlogAndRecipe == true && controller.images.isNotEmpty) {
+            if (controller.images.isNotEmpty) {
               controller.images.removeLast();
             }
-            controller.pickImage(ImageSource.gallery, maxLimit,
-                isFromBlogAndRecipe: isFromBlogAndRecipe);
+            controller.pickImage(ImageSource.gallery, maxLimit);
             Get.back();
           },
           onTapForCamera: () {
-            if (isFromBlogAndRecipe == true && controller.images.isNotEmpty) {
+            if (controller.images.isNotEmpty) {
               controller.images.removeLast();
             }
-            controller.pickImage(ImageSource.camera, maxLimit,
-                isFromBlogAndRecipe: isFromBlogAndRecipe);
+            controller.pickImage(ImageSource.camera, maxLimit);
             Get.back();
           },
         );

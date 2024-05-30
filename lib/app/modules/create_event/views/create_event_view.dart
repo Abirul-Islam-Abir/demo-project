@@ -1,3 +1,4 @@
+import 'package:demo/app/common/widgets/multiple_image_select/multiple_image_select_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +19,8 @@ class CreateEventView extends GetView<CreateEventController> {
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
+              const MultipleImageSelectWidget(maxLimit: 1),
+              const SizedBox(height: 10),
               TextField(
                 controller: controller.titleController,
                 decoration: InputDecoration(

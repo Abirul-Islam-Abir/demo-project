@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:demo/app/api_services/api_services.dart';
 import 'package:demo/app/common/token_keeper.dart';
+import 'package:demo/app/common/widgets/multiple_image_select/multiple_image_select_controller.dart';
 import 'package:demo/app/modules/get_all_events/get_all_events_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class CreateEventController extends GetxController {
   final descriptionController = TextEditingController();
   final guestLimitController = TextEditingController();
   final cashPriceController = TextEditingController();
-
+  final imageUrl = MultipleImageSelectController.instance.imageUrl;
   RxBool isLoading = false.obs;
   Future<bool> createEvent() async {
     isLoading.value = true;
@@ -23,8 +24,7 @@ class CreateEventController extends GetxController {
       "title": titleController.text.toString(),
       "description": descriptionController.text.toString(),
       "eventCategoryId": "7dc7cd92-36a8-4c8a-80c2-613fe758dd70",
-      "image_url":
-          "http://res.cloudinary.com/doz2bhhqv/image/upload/v1705300939/1705300934_event_image.png",
+      "image_url": imageUrl,
       "min_age": 12,
       "max_age": 24,
       "Guest_limit": int.parse(guestLimitController.text),

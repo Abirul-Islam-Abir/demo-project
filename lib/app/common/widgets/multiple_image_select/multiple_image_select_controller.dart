@@ -17,8 +17,10 @@ class MultipleImageSelectController extends GetxController {
   final _images = <XFile>[].obs;
   final List<String> imageUrls = [];
 
-  Future<void> pickImage(ImageSource source, int maxLimit,
-      {bool? isFromBlogAndRecipe}) async {
+  Future<void> pickImage(
+    ImageSource source,
+    int maxLimit,
+  ) async {
     try {
       final pickedFile = await _picker.pickImage(source: source);
       if (_images.length < maxLimit) {
@@ -46,7 +48,7 @@ class MultipleImageSelectController extends GetxController {
     _imageUploadInProgress.value = true;
     update();
     final NetworkResponse response = await PostRequest.execute(
-        ApiServices.eventUpdateUrl, {},
+        ApiServices.eventUploadImageUrl, {},
         images: [File(image!.path)], isImage: true);
     _imageUploadInProgress.value = false;
     update();

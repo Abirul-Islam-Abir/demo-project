@@ -20,7 +20,7 @@ class PostRequest {
   }) async {
     try {
       var headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': isImage ? 'multipart/form-data' : 'application/json',
         'Authorization': 'Bearer ${TokenKeeper.accessToken.toString()}'
       };
 
