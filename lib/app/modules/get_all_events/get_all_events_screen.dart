@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:demo/app/data/token_keeper.dart';
+import 'package:demo/app/modules/get_all_events/get_all_events_controller.dart';
+import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../api_services/api_services.dart';
-import '../../model/all_events_model.dart';
 
 class GetAllEventsScreen extends StatefulWidget {
   const GetAllEventsScreen({super.key});
@@ -15,42 +17,11 @@ class GetAllEventsScreen extends StatefulWidget {
 }
 
 class _GetAllEventsScreenState extends State<GetAllEventsScreen> {
-  List<AllEventModel> allEventsData = [];
-
-  bool _isLoading = true;
-
-  bool get isLoading => _isLoading;
-
-  Future<void> allEvents() async {
-    final String? token = TokenKeeper.accessToken;
-    if (token != null && token.isNotEmpty) {
-      _isLoading = true;
-      setState(() {});
-      var response = await http.get(
-        Uri.parse(ApiServices.getAllEventsUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-      var responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        for (var json in responseData['data']['events']) {
-          allEventsData.add(AllEventModel.fromJson(json));
-        }
-        _isLoading = false;
-        setState(() {});
-      } else {
-        _isLoading = false;
-        setState(() {});
-        // Handle error
-      }
-    }
-  }
+  final GetAllEventController controller = Get.put(GetAllEventController());
 
   @override
   void initState() {
-    allEvents();
+    controller.allEvents();
     super.initState();
   }
 
@@ -60,26 +31,34 @@ class _GetAllEventsScreenState extends State<GetAllEventsScreen> {
       appBar: AppBar(
         title: const Text('All Events'),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: allEventsData.length,
-              itemBuilder: (context, index) {
-                final blog = allEventsData[index];
-                return Card(
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(10),
-                    title: Text(blog.title.toString()),
-                    subtitle: Text(blog.description.toString()),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              EventById(id: blog.id.toString())));
-                    },
-                  ),
-                );
-              },
-            ),
+      body: Obx(() {
+        return controller.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.builder(
+                itemCount: controller.allEventsData.length,
+                itemBuilder: (context, index) {
+                  final blog = controller.allEventsData[index];
+                  return Card(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10),
+                      title: Text(blog.title.toString()),
+                      subtitle: Text(blog.description.toString()),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                EventById(id: blog.id.toString())));
+                      },
+                    ),
+                  );
+                },
+              );
+      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed(Routes.CREATE_EVENT);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

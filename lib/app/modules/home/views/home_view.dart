@@ -19,12 +19,13 @@ class HomeView extends GetView<HomeController> {
         title: const Text('Home View'),
         centerTitle: true,
         actions: [
-          IconButton(
+          TextButton(
               onPressed: () {
                 TokenKeeper.clear();
                 Get.offAllNamed(Routes.LOGIN_SELECT);
               },
-              icon: const Icon(Icons.logout_sharp))
+              child: const Text('Logout')),
+          const SizedBox(width: 10)
         ],
       ),
       drawer: const Drawer(

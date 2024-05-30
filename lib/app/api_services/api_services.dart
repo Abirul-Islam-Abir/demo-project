@@ -11,6 +11,7 @@ static String getAllEventsUrl = '$_baseUrl/event/getall';
 static String eventByIdUrl = '$_baseUrl/event/';
 static String eventUpdateUrl = '$_baseUrl/event/update/';
 static String eventDeleteUrl = '$_baseUrl/event/delete/';
+static String eventCreateUrl = '$_baseUrl/event/create';
 static String eventUploadImageUrl = '$_baseUrl/event/upload';
 
 }
