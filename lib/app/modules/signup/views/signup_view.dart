@@ -61,17 +61,28 @@ class SignupView extends GetView<SignupController> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : ElevatedButton(
-                        onPressed: controller.signUp,
-                        child: const Text('Sign Up'),
+                    : Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: controller.signUp,
+                            child: const Text('Sign Up'),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text('Already have an account?'),
+                          TextButton(
+                              onPressed: () {
+                                Get.offAllNamed(Routes.AUTH);
+                              },
+                              child: const Text('Sign In')),
+                        ],
                       );
               }),
-              const Text('Already have an account?'),
-              TextButton(
-                  onPressed: () {
-                    Get.offAllNamed(Routes.AUTH);
-                  },
-                  child: const Text('Sign In')),
+
+              // TextButton(
+              //     onPressed: () {
+              //       controller.isLoading.value = false;
+              //     },
+              //     child: const Text('false')),
             ],
           ),
         ),

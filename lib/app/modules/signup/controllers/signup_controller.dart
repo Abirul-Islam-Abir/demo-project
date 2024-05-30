@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:demo/app/modules/auth/controllers/auth_controller.dart';
 import 'package:demo/app/routes/app_pages.dart';
@@ -37,7 +38,9 @@ class SignupController extends GetxController {
       'country': 'Bangladesh',
       "interests": ["036c8983-4c11-43b6-82b0-8701df609cbf"]
     };
+    log(data.toString());
     String body = json.encode(data);
+    log(body);
     var response = await http.post(
       Uri.parse(ApiServices.signUpUrl),
       headers: {
@@ -45,7 +48,8 @@ class SignupController extends GetxController {
       },
       body: body,
     );
-    var responseData = json.decode(response.body);
+    var responseData = jsonDecode(response.body);
+    log(responseData.toString());
     if (response.statusCode == 201) {
       isLoading.value = false;
       update();

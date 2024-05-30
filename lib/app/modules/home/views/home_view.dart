@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:demo/app/data/token_keeper.dart';
 import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,9 @@ class HomeView extends GetView<HomeController> {
                 ),
               );
       }),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   log(TokenKeeper.accessToken.toString());
+      // }),
     );
   }
 }

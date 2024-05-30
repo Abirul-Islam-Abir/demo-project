@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:demo/app/data/token_keeper.dart';
+import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +31,7 @@ class AuthController extends GetxController {
       //   "id": "0yODYxMjk5MzE1MjUiLCJpYXQiOjE3MTYyMjE"
       // },
       "email": email,
-      "key": passKeyController.text
+      "key": passKeyController.text.trim(),
     };
     log('Response data: $data');
     // Make the POST request
@@ -80,7 +81,7 @@ class AuthController extends GetxController {
     // Define the endpoint URL
     var url = Uri.parse(ApiServices.generatePassKeyUrl);
     // Define the data to be sent in the body of the request
-    var data = {"email": emailController.text};
+    var data = {"email": emailController.text.trim()};
 
     // Make the POST request
     var response = await http.post(
@@ -90,17 +91,13 @@ class AuthController extends GetxController {
       //   'Content-Type': 'application/json', // Define the content type as JSON
       // },
     );
-    final responseData = jsonDecode(response.body);
     if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
       isLoading.value = false;
       update();
 
       log(responseData.toString());
-      // Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) => VerifyPassKeyScreen(
-      //       mail: _emailController.text,
-      //       passKeyChallenge: responseData['data']['passkey_challenge']),
-      // ));
+
       passKeyController.text = responseData['data']['passkey_challenge'];
       return true;
     } else {
@@ -108,6 +105,21 @@ class AuthController extends GetxController {
       update();
       return false;
       // Request failed with an error status code, handle the error
+    }
+  }
+
+  RxBool isAuthenticate = false.obs;
+
+  onSignInPressed() async {
+    final isGotToken = await verifyPassKey(emailController.text.trim());
+    if (isGotToken) {
+      Get.offAllNamed(Routes.HOME);
+    } else {
+      Get.showSnackbar(const GetSnackBar(
+        message: 'Please verify your email',
+        duration: Duration(seconds: 2),
+      ));
+      Get.offAllNamed(Routes.AUTH);
     }
   }
 }

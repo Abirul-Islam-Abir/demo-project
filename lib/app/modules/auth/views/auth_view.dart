@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../controllers/auth_controller.dart';
 
@@ -9,6 +12,8 @@ class AuthView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     controller.emailController.text = 'muj.i@icloud.com';
+    final LocalAuthentication auth = LocalAuthentication();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Auth View'),
@@ -29,36 +34,57 @@ class AuthView extends GetView<AuthController> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
               Obx(
                 () => controller.isLoading.value || controller.isLoading2.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : ElevatedButton(
-                        onPressed: () async {
-                          final isGotToken = await AuthController.to
-                              .verifyPassKey(
-                                  controller.emailController.text.trim());
-                          if (isGotToken) {
-                            Get.offAllNamed(Routes.HOME);
-                          } else {
-                            Get.showSnackbar(const GetSnackBar(
-                              message: 'Please verify your email',
-                              duration: Duration(seconds: 2),
-                            ));
-                            Get.offAllNamed(Routes.AUTH);
-                          }
-                        },
-                        child: const Text('Sign In'),
+                    : Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (!controller.isAuthenticate.value) {
+                                final bool canCheckBiometrics =
+                                    await auth.canCheckBiometrics;
+                                if (canCheckBiometrics) {
+                                  try {
+                                    final bool didAuthenticate =
+                                        await auth.authenticate(
+                                      localizedReason:
+                                          'Please authenticate to sign in',
+                                      options: const AuthenticationOptions(
+                                        biometricOnly: false,
+                                      ),
+                                    );
+                                    controller.isAuthenticate.value =
+                                        didAuthenticate;
+                                    if (didAuthenticate) {
+                                      controller.onSignInPressed();
+                                    } else {
+                                      Get.showSnackbar(const GetSnackBar(
+                                        message: 'Authentication failed',
+                                        duration: Duration(seconds: 2),
+                                      ));
+                                    }
+                                  } catch (e) {
+                                    log(e.toString());
+                                  }
+                                }
+                              }
+                            },
+                            child: const Text('Sign In'),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text('Don\'t have an account?'),
+                          TextButton(
+                              onPressed: () {
+                                Get.offAllNamed(Routes.SIGNUP);
+                              },
+                              child: const Text('Sign Up')),
+                        ],
                       ),
               ),
-              const SizedBox(height: 10),
-              const Text('Don\'t have an account?'),
-              TextButton(
-                  onPressed: () {
-                    Get.offAllNamed(Routes.SIGNUP);
-                  },
-                  child: const Text('Sign Up')),
             ],
           ),
         ),
