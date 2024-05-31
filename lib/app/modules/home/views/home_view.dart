@@ -37,22 +37,24 @@ class HomeView extends GetView<HomeController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextButton(
-                  onPressed: () {
-                    Get.to(() => const GetAllBlogsScreen());
-                  },
-                  child: const Text('Get All Blogs')),
-              TextButton(
-                  onPressed: () {
-                    Get.to(() => const GetAllEventsScreen());
-                  },
-                  child: const Text('Get all events')),
-              TextButton(
-                  onPressed: () {
-                    Get.to(() => const AllEventsCategory());
-                  },
-                  child: const Text('Get all event category')),
-              TextButton(onPressed: () {}, child: const Text('Get all chats')),
+              CustomButton(
+                onPressed: () {
+                  Get.to(() => const GetAllBlogsScreen());
+                },
+                title: 'All Blogs',
+              ),
+              CustomButton(
+                onPressed: () {
+                  Get.to(() => const GetAllEventsScreen());
+                },
+                title: 'All Events',
+              ),
+              CustomButton(
+                onPressed: () {
+                  Get.to(() => const AllEventsCategory());
+                },
+                title: 'All Event Category',
+              ),
             ],
           ),
         ),
@@ -60,6 +62,40 @@ class HomeView extends GetView<HomeController> {
       // floatingActionButton: FloatingActionButton(onPressed: () {
       //   Get.to(const HomeScreen());
       // }),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({
+    super.key,
+    required this.title,
+    required this.onPressed,
+  });
+  final String title;
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 50,
+          width: 200,
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -126,13 +126,14 @@ class _EventByIdState extends State<EventById> {
         "start_time": "2024-01-14T23:59:59Z",
         "end_time": "2024-01-15T00:00:00Z"
       };
-      var response = await http.put(Uri.parse(Urls.eventUpdateUrl + widget.id),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          body: jsonEncode(body));
-      var responseData = json.decode(response.body);
+      var response =
+          await http.put(Uri.parse('${Urls.eventUpdateUrl}/${widget.id}'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $token',
+              },
+              body: jsonEncode(body));
+      var responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
         eventByIdData = responseData['data']['updatedEvent'];
         await eventById();

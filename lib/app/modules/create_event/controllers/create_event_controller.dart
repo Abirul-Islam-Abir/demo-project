@@ -14,9 +14,9 @@ class CreateEventController extends GetxController {
   final descriptionController = TextEditingController();
   final guestLimitController = TextEditingController();
   final cashPriceController = TextEditingController();
-  final imageUrl = MultipleImageSelectController.instance.imageUrl;
   RxBool isLoading = false.obs;
   Future<bool> createEvent() async {
+    final imageUrl = MultipleImageSelectController.instance.imageUrl;
     isLoading.value = true;
     update();
     final url = Uri.parse(Urls.eventCreateUrl);
@@ -24,7 +24,7 @@ class CreateEventController extends GetxController {
       "title": titleController.text.toString(),
       "description": descriptionController.text.toString(),
       "eventCategoryId": "7dc7cd92-36a8-4c8a-80c2-613fe758dd70",
-      "image_url": imageUrl,
+      "image_url": imageUrl.toString(),
       "min_age": 12,
       "max_age": 24,
       "Guest_limit": int.parse(guestLimitController.text),
@@ -34,6 +34,7 @@ class CreateEventController extends GetxController {
       "start_time": "2024-01-14T23:59:59Z",
       "end_time": "2024-01-15T00:00:00Z"
     };
+    log(data.toString());
     final String? token = TokenKeeper.accessToken;
     // if (token != null && token.isNotEmpty) {
     log(token.toString());
@@ -47,11 +48,12 @@ class CreateEventController extends GetxController {
     );
 
     if (res.statusCode == 200 || res.statusCode == 201) {
+      log('here');
       log(res.body);
-      Get.back();
-      GetAllEventController.to.allEvents();
       isLoading.value = false;
       update();
+      Get.back();
+      GetAllEventController.to.allEvents();
       return true;
     } else {
       log(res.body);
