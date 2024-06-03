@@ -21,17 +21,23 @@ class LoginSelectView extends GetView<LoginSelectController> {
               const SizedBox(height: 70),
               ElevatedButton(
                   onPressed: () {
-                    Get.toNamed(Routes.AUTH);
+                    Get.toNamed(Routes.AUTH, arguments: ['login']);
                   },
                   child: const Text('Login with Email & Passkey')),
               const SizedBox(height: 20),
-              FilledButton(
+              ElevatedButton(
                   onPressed: () {
                     Get.toNamed(Routes.LOGIN);
                   },
                   child: const Text('Login with Email & Password')),
               const SizedBox(height: 20),
-              OutlinedButton(
+              FilledButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.AUTH, arguments: ['signup']);
+                  },
+                  child: const Text('Sign Up with Email & Passkey')),
+              const SizedBox(height: 20),
+              FilledButton(
                   onPressed: () {
                     Get.toNamed(Routes.SIGNUP);
                   },

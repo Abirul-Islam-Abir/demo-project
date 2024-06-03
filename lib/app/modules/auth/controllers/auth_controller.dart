@@ -2,12 +2,21 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:demo/app/common/token_keeper.dart';
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:demo/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AuthController extends GetxController {
+  late String? type;
+  @override
+  void onInit() {
+    type = Get.arguments[0];
+    log(type!);
+    super.onInit();
+  }
+
   static AuthController get to => Get.put(AuthController());
 
   // RxBool isPasskeySupported = false.obs;
@@ -15,21 +24,74 @@ class AuthController extends GetxController {
   final emailController = TextEditingController();
   RxBool isVerified = true.obs;
   RxBool isLoading = false.obs;
-  Future<void> verifyPassKey(String email) async {
+  Future<void> verifyPassKeyForLogin(String email) async {
     // late bool isApiResponseSuccess;
     isLoading.value = true;
     update();
-    String pass = '';
-    final url1 = Uri.parse(ApiServices.generatePassKeyUrl);
-    final url2 = Uri.parse(ApiServices.verifyPassKeyUrl);
+    String passKey = '';
+    final url1 = Uri.parse(Urls.generatePassKeyUrl);
+    final url2 = Uri.parse(Urls.verifyPassKeyLoginUrl);
 
-    http.post(url1, body: {"email": email}).then((response) {
+    http.post(url1, body: {"email": email, "passkeytype": "login"}).then(
+        (response) {
       log(response.body);
-      pass = jsonDecode(response.body)['data']['passkey_challenge'];
+      passKey = jsonDecode(response.body)['data']['passkey_challenge'];
     }).then((value) {
       return http.post(url2, body: {
         "email": email,
-        "key": pass,
+        "key": passKey,
+      }).then((response) {
+        log(response.body);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          final responseData = jsonDecode(response.body);
+          log('saving token');
+          TokenKeeper.setTokens(
+            responseData['data']['token'],
+          ).then((value) {
+            isVerified.value = true;
+            if (isVerified.value) {
+              Get.offAllNamed(Routes.HOME);
+            } else {
+              Get.showSnackbar(const GetSnackBar(
+                message: 'Please verify your email',
+                duration: Duration(seconds: 2),
+              ));
+              Get.offAllNamed(Routes.LOGIN_SELECT);
+            }
+          });
+          isLoading.value = false;
+          update();
+          // isApiResponseSuccess = true;
+        } else {
+          Get.showSnackbar(const GetSnackBar(
+            message: 'Please verify your email1',
+            duration: Duration(seconds: 2),
+          ));
+          isVerified.value = false;
+          // isApiResponseSuccess = false;
+        }
+        isLoading.value = false;
+        update();
+      });
+    });
+  }
+
+  Future<void> verifyPassKeyForSignup(String email) async {
+    // late bool isApiResponseSuccess;
+    isLoading.value = true;
+    update();
+    String passKey = '';
+    final url1 = Uri.parse(Urls.generatePassKeyUrl);
+    final url2 = Uri.parse(Urls.verifyPassKeySignupUrl);
+
+    http.post(url1, body: {"email": email, "passkeytype": "signup"}).then(
+        (response) {
+      log(response.body);
+      passKey = jsonDecode(response.body)['data']['passkey_challenge'];
+    }).then((value) {
+      return http.post(url2, body: {
+        "email": email,
+        "key": passKey,
       }).then((response) {
         log(response.body);
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -69,17 +131,19 @@ class AuthController extends GetxController {
   RxBool isAuthenticate = false.obs;
 
   onSignInPressed() async {
-    await verifyPassKey(emailController.text.trim());
+    type == 'login'
+        ? await verifyPassKeyForLogin(emailController.text.trim())
+        : await verifyPassKeyForSignup(emailController.text.trim());
   }
 }
 
-abstract class ApiServices {
-  static const String _baseUrl = 'https://kumele-backend.vercel.app/api';
-  static String signUpUrl = '$_baseUrl/auth/signup';
-  static String signInUrl = '$_baseUrl/auth/login';
-  static String getUserDataUrl = '$_baseUrl/auth/getUserData';
-  static String generatePassKeyUrl =
-      '$_baseUrl/auth/passkey/generate/challenge';
-  static String verifyPassKeyUrl = '$_baseUrl/auth/passkey/verify/challenge';
-  static String getUser = '$_baseUrl/user/get_user';
-}
+// abstract class ApiServices {
+//   static const String _baseUrl = 'https://kumele-backend.vercel.app/api';
+//   static String signUpUrl = '$_baseUrl/auth/signup';
+//   static String signInUrl = '$_baseUrl/auth/login';
+//   static String getUserDataUrl = '$_baseUrl/auth/getUserData';
+//   static String generatePassKeyUrl =
+//       '$_baseUrl/auth/passkey/generate/challenge';
+//   static String verifyPassKeyUrl = '$_baseUrl/auth/passkey/verify/challenge';
+//   static String getUser = '$_baseUrl/user/get_user';
+// }

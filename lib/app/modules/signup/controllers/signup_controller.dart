@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:demo/app/data/urls/urls.dart';
 import 'package:demo/app/modules/auth/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +42,7 @@ class SignupController extends GetxController {
     String body = json.encode(data);
     log(body);
     var response = await http.post(
-      Uri.parse(ApiServices.signUpUrl),
+      Uri.parse(Urls.signUpUrl),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -56,7 +57,7 @@ class SignupController extends GetxController {
         message: responseData['message'],
         duration: const Duration(seconds: 2),
       ));
-      await AuthController.to.verifyPassKey(email);
+      await AuthController.to.verifyPassKeyForLogin(email);
     } else {
       isLoading.value = false;
       update();
