@@ -78,31 +78,31 @@ class AllEventModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['category'] = this.category;
-    data['image_url'] = this.imageUrl;
-    data['min_age'] = this.minAge;
-    data['max_age'] = this.maxAge;
-    data['Guest_limit'] = this.guestLimit;
-    data['escrow_price'] = this.escrowPrice;
-    data['cash_price'] = this.cashPrice;
-    data['payment_type'] = this.paymentType;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['home_number'] = this.homeNumber;
-    data['street'] = this.street;
-    data['town'] = this.town;
-    data['city'] = this.city;
-    data['state'] = this.state;
-    data['country'] = this.country;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['creator_name'] = this.creatorName;
-    data['userId'] = this.userId;
-    data['eventCategoryId'] = this.eventCategoryId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['category'] = category;
+    data['image_url'] = imageUrl;
+    data['min_age'] = minAge;
+    data['max_age'] = maxAge;
+    data['Guest_limit'] = guestLimit;
+    data['escrow_price'] = escrowPrice;
+    data['cash_price'] = cashPrice;
+    data['payment_type'] = paymentType;
+    data['start_time'] = startTime;
+    data['end_time'] = endTime;
+    data['home_number'] = homeNumber;
+    data['street'] = street;
+    data['town'] = town;
+    data['city'] = city;
+    data['state'] = state;
+    data['country'] = country;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['creator_name'] = creatorName;
+    data['userId'] = userId;
+    data['eventCategoryId'] = eventCategoryId;
     return data;
   }
 }

@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
+import '../modules/all_messages_by_chat_id/bindings/all_messages_by_chat_id_binding.dart';
+import '../modules/all_messages_by_chat_id/views/all_messages_by_chat_id_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
 import '../modules/create_event/bindings/create_event_binding.dart';
 import '../modules/create_event/views/create_event_view.dart';
+import '../modules/event_by_id/bindings/event_by_id_binding.dart';
+import '../modules/event_by_id/views/event_by_id_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -58,6 +62,16 @@ class AppPages {
       name: _Paths.CREATE_EVENT,
       page: () => const CreateEventView(),
       binding: CreateEventBinding(),
+    ),
+    GetPage(
+      name: _Paths.EVENT_BY_ID,
+      page: () => EventByIdView(),
+      binding: EventByIdBinding(),
+    ),
+    GetPage(
+      name: _Paths.ALL_MESSAGES_BY_CHAT_ID,
+      page: () =>   AllMessagesByChatIdView(),
+      binding: AllMessagesByChatIdBinding(),
     ),
   ];
 }

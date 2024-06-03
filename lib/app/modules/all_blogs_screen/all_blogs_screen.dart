@@ -25,7 +25,6 @@ class _GetAllBlogsScreenState extends State<GetAllBlogsScreen> {
   Future<void> allBlogScreen() async {
     final String? token = TokenKeeper.accessToken;
     if (token != null && token.isNotEmpty) {
-      print(token);
       _isLoading = true;
       setState(() {});
       var response = await http.get(
@@ -69,7 +68,7 @@ class _GetAllBlogsScreenState extends State<GetAllBlogsScreen> {
               itemBuilder: (context, index) {
                 final blog = allBlogsData[index];
                 return Card(
-                  child: ListTile(
+                  child: ListTile(trailing: Icon(Icons.arrow_forward_outlined),
                     contentPadding: const EdgeInsets.all(10),
                     title: Text(blog.title.toString()),
                     onTap: () {

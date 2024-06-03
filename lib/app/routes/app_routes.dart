@@ -12,6 +12,8 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const LOGIN_SELECT = _Paths.LOGIN_SELECT;
   static const CREATE_EVENT = _Paths.CREATE_EVENT;
+  static const EVENT_BY_ID = _Paths.EVENT_BY_ID;
+  static const ALL_MESSAGES_BY_CHAT_ID = _Paths.ALL_MESSAGES_BY_CHAT_ID;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const LOGIN_SELECT = '/login-select';
   static const CREATE_EVENT = '/create-event';
+  static const EVENT_BY_ID = '/event-by-id';
+  static const ALL_MESSAGES_BY_CHAT_ID = '/all-messages-by-chat-id';
 }
