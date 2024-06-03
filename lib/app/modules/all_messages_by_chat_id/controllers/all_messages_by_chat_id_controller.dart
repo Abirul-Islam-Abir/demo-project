@@ -9,15 +9,15 @@ import 'package:http/http.dart' as http;
 import '../../../data/urls/urls.dart';
 
 class AllMessagesByChatIdController extends GetxController {
-
   List allMessagesData = [];
   final chatId = Get.arguments['chatId'];
   final eventId = Get.arguments['event_id'];
-  final message = TextEditingController(text:  '');
+  final messageController = TextEditingController();
+  final updateController = TextEditingController();
 
   Future<void> createChat() async {
     allMessagesData.add({
-      "messageBody": message.text.toString(),
+      "messageBody": messageController.text.toString(),
       "event_id": eventId.toString(),
       "chatId": chatId.toString()
     });
@@ -25,7 +25,7 @@ class AllMessagesByChatIdController extends GetxController {
     if (token != null && token.isNotEmpty) {
       update();
       var body = jsonEncode({
-        "messageBody": message.text.toString(),
+        "messageBody": messageController.text.toString(),
         "event_id": eventId.toString(),
         "chatId": chatId.toString()
       });
@@ -35,7 +35,7 @@ class AllMessagesByChatIdController extends GetxController {
             'Authorization': 'Bearer $token',
           },
           body: body);
-      message.clear();
+      messageController.clear();
       var responseData = json.decode(response.body);
       if (response.statusCode == 201) {
         print(responseData);
@@ -70,32 +70,32 @@ class AllMessagesByChatIdController extends GetxController {
     }
   }
 
-
-  String updateMsg = '';
-void setMessage(messages){
-  message.text = messages;
-    update();
-}
-  Future<void> updateMessage({id}) async {
+  Future<void> updateMessage({required String id}) async {
+    Get.back();
     final String? token = TokenKeeper.accessToken;
     if (token != null && token.isNotEmpty) {
-      update();
+      // Optimistic update: update the message in the list before the API call
+      int index = allMessagesData.indexWhere((message) => message['id'].toString() == id);
+      if (index != -1) {
+        allMessagesData[index]['messageBody'] = updateController.text.toString();
+        update();
+      }
 
-      var body = jsonEncode({"messageBody": message.text.toString()});
+      var body = jsonEncode({"messageBody": updateController.text.toString()});
       var response = await http.put(
-          Uri.parse(Urls.updateMessage + id),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          body: body);
-      var responseData = json.decode(response.body);
+        Uri.parse(Urls.updateMessage + id),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: body,
+      );
+
       if (response.statusCode == 200) {
-        allMessagesData = responseData['chatMessages'];
+
         update();
       } else {
-        update();
-        // Handle error
+
       }
     }
   }
